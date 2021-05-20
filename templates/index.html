@@ -1,0 +1,135 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Transliterate EN-MR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://ritznstacks.tech:444/index.css">
+    <style>
+        #input_textarea{
+            width: 100%;
+        }
+        #transliterate-container{
+            width: 70%;
+            align-self: center;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="features-blue" style="height:157px;">
+        <div class="container" style="height:73px;">
+            <div class="intro" style="height:85px;">
+                <h2 class="text-center" style="height:45px;margin-top: 50px;">English to Marathi Transliterator</h2>
+                <p class="text-center"> Transliteration helps people pronounce words and names in foreign languages</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col" style="display: flex; flex-direction: column; align-items: center;">
+                        <!-- Enter text to translate. -->
+                        <!-- <div class="form-group">
+                            <label for="text-to-translate"><strong>Enter the text you'd like to transliterate:</strong></label>
+                            <textarea class="form-control" id="textToTranslate" rows="5"></textarea>
+                        </div> -->
+                        <label for="text-to-translate"><strong>Enter the text you'd like to transliterate:</strong></label>
+
+                        <div id="transliterate-container">
+                            <!-- <label for="text-to-translate"><strong>Enter the text you'd like to transliterate:</strong></label> -->
+                            <!-- <textarea class="form-control" id="textToTranslate" rows="5"></textarea> -->
+                        </div>
+                        <!-- Select output language here. -->
+                        <!-- <div class="form-group">
+                            <label for="select-language"><strong>Transliterate to:</strong></label>
+                            <select class="form-control" id="selectLanguage">
+                                <option value="mr">Marathi</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div> -->
+                        <!-- <button type="submit" class="btn btn-primary mb-2" id="transliterate">Transliterate text</button> -->
+                        </br>
+                </div>
+                <!-- <div class="col">
+                    <div class="form-group" id="translator-text-response">
+                        <label for="translation-result"><strong>Transliterated text:</strong></label>
+                        <textarea readonly class="form-control" id="translationResult"
+                            rows="5"></textarea>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Load our React component. -->
+    <script src="{{ url_for('static', filename='ReactTransliterate.js') }}"></script>
+    <script type=text/javascript>
+        $(function() {
+          $('#transliterate').click(function(e) {
+            e.preventDefault()
+            $.ajax({
+                type: 'POST',
+                url : "{{url_for('transliterate')}}",
+                data: {
+                    "to": $("#selectLanguage").val(),
+                    "from": $("#selectLanguage").val()==="mr"?"en":"mr",
+                    "text": $("#textToTranslate").val()
+                },
+                success: function (result, status) {
+                    console.log(result, status);
+                    $("#translationResult").val(result.result);
+                }
+            })
+
+            return false;
+          });
+        });
+    
+    const domContainer = document.querySelector('#transliterate-container');
+    // ReactDOM.render(e(ReactTransliterate), domContainer);
+    var text = "";
+//     ReactDOM.render(e(ReactTransliterate, {
+//   renderComponent: function renderComponent(props) {
+//     return React.createElement("textarea", props);
+//         },
+//         value: text,
+//         lang: "mr"
+
+//         }), domContainer);
+    function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+    function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+    function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+    function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+    var App = function App() {
+    var _useState = React.useState(""),
+        _useState2 = _slicedToArray(_useState, 2),
+        text = _useState2[0],
+        setText = _useState2[1];
+
+    return React.createElement(ReactTransliterate, {
+        renderComponent: function renderComponent(props) {
+        return React.createElement("textarea", {...props, id:"input_textarea", rows: "5"});
+        },
+        value: text,
+        onChangeText: function onChangeText(text) {
+            
+        setText(text);
+        },
+        lang: "hi"
+    });
+    };
+    ReactDOM.render(e(App), domContainer);
+</script>
+</body>
+
+</html>
